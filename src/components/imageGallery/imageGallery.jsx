@@ -24,16 +24,16 @@ export default class ImageGallery extends Component {
                 this.setState({imageArray: []})
             }
             
-            setTimeout(()=> {
-                fetch(`https://pixabay.com/api/?q=${this.props.searchName}&page=${this.state.page}&key=25358610-6c58710bcb07b0c67b61215e4&image_type=photo&orientation=horizontal&per_page=12`)
+            fetch(`https://pixabay.com/api/?q=${this.props.searchName}&page=${this.state.page}&key=25358610-6c58710bcb07b0c67b61215e4&image_type=photo&orientation=horizontal&per_page=12`)
             .then(response => response.json()).catch(error => {console.log(error);}).then(resultArray => this.setState({imageArray: this.state.imageArray.concat(resultArray.hits)}))
             this.setState({status: 'resolved'})
-            }, 3000)
+            
             setTimeout(() => {
-                if (!this.state.imageArray.length) {
+            if (!this.state.imageArray.length) {
                     this.setState({status: "rejected"})
                 }
             }, 3000)
+
         }
     }
 

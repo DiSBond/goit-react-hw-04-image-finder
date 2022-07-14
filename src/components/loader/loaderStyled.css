@@ -1,0 +1,10 @@
+.loaderContainer {
+    align-items: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loaderText {
+    margin-bottom: 50px;
+}

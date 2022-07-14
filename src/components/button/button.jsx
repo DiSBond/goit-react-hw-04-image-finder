@@ -15,3 +15,5 @@ export default class ButtonLoadMore extends Component {
 ButtonLoadMore.propTypes = {
   addNextPage: propTypes.func,
 }
+
+// asd

@@ -1,37 +1,33 @@
-import React, { Component } from 'react'
-import './searchBarStyled.css'
-
+import React, { Component } from 'react';
+import './searchBarStyled.css';
 
 export default class SearchBar extends Component {
   state = {
-      searchName: '',
-  }
+    searchName: '',
+  };
 
   addPictureName = e => {
-    this.setState({searchName: e.currentTarget.value.toLowerCase()})
-  }
-  
-  searchSubmit = event => {
-    event.preventDefault()
+    this.setState({ searchName: e.currentTarget.value.toLowerCase() });
+  };
 
-    
+  searchSubmit = event => {
+    event.preventDefault();
 
     if (this.state.searchName.trim() === '') {
       alert('Строка запроса пуста');
-      return
+      return;
     }
 
-    this.props.onSubmit(this.state.searchName)
-    this.setState({searchName: ''})
-  }
-
+    this.props.onSubmit(this.state.searchName);
+    this.setState({ searchName: '' });
+  };
 
   render() {
     return (
-      <div className='Searchbar'>
+      <div className="Searchbar">
         <header className="searchbar">
           <form className="SearchForm" onSubmit={this.searchSubmit}>
-            <button type="submit" className='buttonSearch'>
+            <button type="submit" className="buttonSearch">
               <span className="SearchForm-button">Search</span>
             </button>
 
@@ -45,8 +41,8 @@ export default class SearchBar extends Component {
               value={this.state.searchName}
             />
           </form>
-        </header> 
+        </header>
       </div>
-    )
+    );
   }
 }

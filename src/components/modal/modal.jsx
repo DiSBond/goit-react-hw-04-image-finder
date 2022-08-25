@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import './modal.css';
+import propTypes from 'prop-types';
 
 const modalRoot = document.querySelector(`#modalRoot`);
 
 export default class Modal extends Component {
+  static propTypes = {
+    closeModal: propTypes.func.isRequired,
+  };
   componentDidMount() {
     window.addEventListener('keydown', this.hadleKeyDown);
   }

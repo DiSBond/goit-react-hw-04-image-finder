@@ -1,14 +1,19 @@
-import './buttonStyled.css';
-// import propTypes from 'prop-types';
+import propTypes from 'prop-types';
+
+import { LoadMoreButton, LoadMoreButtonContainer } from './buttonStyled.jsx';
 
 const ButtonLoadMore = ({ addNextPage }) => {
   return (
-    <div className="ButtonContainer">
-      <button className="Button" type="button" onClick={addNextPage}>
+    <LoadMoreButtonContainer>
+      <LoadMoreButton type="button" onClick={addNextPage}>
         Load More
-      </button>
-    </div>
+      </LoadMoreButton>
+    </LoadMoreButtonContainer>
   );
 };
 
 export default ButtonLoadMore;
+
+ButtonLoadMore.propTypes = {
+  addNextPage: propTypes.func.isRequired,
+};

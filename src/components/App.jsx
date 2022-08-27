@@ -3,7 +3,7 @@ import SearchBar from './searchbar/searchBar';
 import ImageGallery from './imageGallery/imageGallery';
 import ButtonLoadMore from 'components/button/button';
 
-import './appStyled.css';
+import AppStyledBox from './appStyled.jsx';
 
 export class App extends Component {
   state = {
@@ -17,7 +17,7 @@ export class App extends Component {
   };
 
   search = name => {
-    this.setState({ searchName: name });
+    this.setState({ searchName: name, page: 1 });
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -25,12 +25,10 @@ export class App extends Component {
       prevState.searchName !== this.state.searchName ||
       prevState.page !== this.state.page
     ) {
-      if (prevState.searchName !== this.state.searchName) {
-        this.setState({ status: 'pending' });
-      }
+      this.setState({ status: 'pending' });
 
       if (prevState.searchName !== this.state.searchName) {
-        this.setState({ imageArray: [], page: 1 });
+        this.setState({ imageArray: [] });
       }
 
       fetch(
@@ -66,6 +64,7 @@ export class App extends Component {
 
   addNextPage = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
+    this.setState({ status: 'pending' });
   };
 
   openModal = e => {
@@ -86,10 +85,11 @@ export class App extends Component {
   };
 
   render() {
-    const { status, imageArray, modal, largeURL, searchName } = this.state;
+    const { status, imageArray, modal, largeURL, searchName, page } =
+      this.state;
 
     return (
-      <div className="App">
+      <AppStyledBox>
         <SearchBar onSubmit={this.search} />
         <ImageGallery
           status={status}
@@ -98,6 +98,7 @@ export class App extends Component {
           closeModal={this.closeModal}
           largeURL={largeURL}
           openModal={this.openModal}
+          page={page}
         />
         {imageArray.length && (
           <ButtonLoadMore
@@ -105,7 +106,7 @@ export class App extends Component {
             addNextPage={this.addNextPage}
           />
         )}
-      </div>
+      </AppStyledBox>
     );
   }
 }

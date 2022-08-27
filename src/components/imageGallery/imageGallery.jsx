@@ -2,8 +2,9 @@ import ImageGalleryItem from './imageGalleryItem';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'components/loader/loader';
 
+import { RejectedContainer, ImageGalleryList } from './imageGallerySt';
+
 import Modal from 'components/modal/modal';
-import './imageGalleryStyled.css';
 import propTypes from 'prop-types';
 
 const ImageGallery = ({
@@ -14,8 +15,9 @@ const ImageGallery = ({
   closeModal,
   largeURL,
   openModal,
+  page,
 }) => {
-  if (status === 'pending') {
+  if (status === 'pending' && page === 1) {
     return (
       <div>
         <Loader />
@@ -25,16 +27,16 @@ const ImageGallery = ({
 
   if (status === 'rejected') {
     return (
-      <div className="ContainerRejected">
+      <RejectedContainer>
         Cant't find anything about {searchName}
-      </div>
+      </RejectedContainer>
     );
   }
 
   if (imageArray.length > 0) {
     return (
       <div>
-        <ul className="ImageGallery">
+        <ImageGalleryList>
           {modal && (
             <Modal closeModal={closeModal}>
               <img src={largeURL} alt="" />
@@ -50,7 +52,8 @@ const ImageGallery = ({
               </li>
             );
           })}
-        </ul>
+          {status === 'pending' && <Loader />}
+        </ImageGalleryList>
       </div>
     );
   }

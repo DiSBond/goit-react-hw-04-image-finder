@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import './searchBarStyled.css';
 import propTypes from 'prop-types';
+
+import {
+  SearchBarSt,
+  SearchForm,
+  SearchFormButton,
+  ButtonSearch,
+  SearchFormInput,
+} from './searchBarSt';
 
 export default class SearchBar extends Component {
   state = {
@@ -29,15 +36,14 @@ export default class SearchBar extends Component {
 
   render() {
     return (
-      <div className="Searchbar">
-        <header className="searchbar">
-          <form className="SearchForm" onSubmit={this.searchSubmit}>
-            <button type="submit" className="buttonSearch">
-              <span className="SearchForm-button">Search</span>
-            </button>
+      <SearchBarSt>
+        <header>
+          <SearchForm onSubmit={this.searchSubmit}>
+            <ButtonSearch type="submit">
+              <SearchFormButton>Search</SearchFormButton>
+            </ButtonSearch>
 
-            <input
-              className="SearchForm-input"
+            <SearchFormInput
               type="text"
               autoComplete="off"
               autoFocus
@@ -45,9 +51,9 @@ export default class SearchBar extends Component {
               onChange={this.addPictureName}
               value={this.state.searchName}
             />
-          </form>
+          </SearchForm>
         </header>
-      </div>
+      </SearchBarSt>
     );
   }
 }

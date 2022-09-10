@@ -84,8 +84,10 @@ export const App = () => {
         openModal={openModal}
         page={page}
       />
-      {imageArray.length && (
+      {imageArray.length ? (
         <ButtonLoadMore searchName={searchName} addNextPage={addNextPage} />
+      ) : (
+        ''
       )}
     </AppStyledBox>
   );

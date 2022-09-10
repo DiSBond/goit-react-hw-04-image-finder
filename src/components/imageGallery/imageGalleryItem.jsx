@@ -13,6 +13,4 @@ const imageGalleryItem = ({ imageURL, imageId }) => {
   );
 };
 
-//fix
-
 export default imageGalleryItem;

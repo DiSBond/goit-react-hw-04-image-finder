@@ -1,9 +1,7 @@
 import ImageGalleryItem from './imageGalleryItem';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'components/loader/loader';
-
 import { RejectedContainer, ImageGalleryList } from './imageGallerySt';
-
 import Modal from 'components/modal/modal';
 import propTypes from 'prop-types';
 

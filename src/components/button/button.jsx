@@ -1,5 +1,4 @@
 import propTypes from 'prop-types';
-
 import { LoadMoreButton, LoadMoreButtonContainer } from './buttonStyled.jsx';
 
 const ButtonLoadMore = ({ addNextPage }) => {

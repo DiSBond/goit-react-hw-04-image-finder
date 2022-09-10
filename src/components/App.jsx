@@ -1,38 +1,28 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from './searchbar/searchBar';
 import ImageGallery from './imageGallery/imageGallery';
 import ButtonLoadMore from 'components/button/button';
 
 import AppStyledBox from './appStyled.jsx';
 
-export class App extends Component {
-  state = {
-    searchName: '',
-    selectedImage: {},
-    imageArray: [],
-    page: 1,
-    status: 'idle',
-    modal: false,
-    largeURL: '',
-  };
+export const App = () => {
+  const [searchName, setSearchName] = useState('');
+  const [selectedImage, setSelectedImage] = useState({});
+  const [imageArray, setImageArray] = useState([]);
+  const [page, setPage] = useState(1);
+  const [status, setStatus] = useState('idle');
+  const [modal, setModal] = useState(false);
+  const [largeURL, setLargeUrl] = useState('');
 
-  search = name => {
-    this.setState({ searchName: name, page: 1 });
-  };
+  useEffect(() => {
+    setImageArray([]);
+  }, [searchName]);
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.searchName !== this.state.searchName ||
-      prevState.page !== this.state.page
-    ) {
-      this.setState({ status: 'pending' });
-
-      if (prevState.searchName !== this.state.searchName) {
-        this.setState({ imageArray: [] });
-      }
-
+  useEffect(() => {
+    if (searchName !== '') {
+      setStatus('pending');
       fetch(
-        `https://pixabay.com/api/?q=${this.state.searchName}&page=${this.state.page}&key=25358610-6c58710bcb07b0c67b61215e4&image_type=photo&orientation=horizontal&per_page=12`
+        `https://pixabay.com/api/?q=${searchName}&page=${page}&key=25358610-6c58710bcb07b0c67b61215e4&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then(response => response.json())
         .catch(error => {
@@ -46,67 +36,58 @@ export class App extends Component {
               webformatURL: obj.webformatURL,
             };
           });
-          this.setState({
-            imageArray: this.state.imageArray.concat(filteredArray),
-          });
-        })
-        .finally(() => {
-          this.setState({ status: 'resolved' });
+
+          setImageArray(imageArray => [...imageArray, ...filteredArray]);
+          if (filteredArray.length === 0) {
+            setStatus('rejected');
+          } else {
+            setStatus('resolved');
+          }
         });
-
-      setTimeout(() => {
-        if (!this.state.imageArray.length) {
-          this.setState({ status: 'rejected' });
-        }
-      }, 3000);
     }
-  }
+  }, [searchName, page]);
 
-  addNextPage = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-    this.setState({ status: 'pending' });
+  const search = name => {
+    setSearchName(name);
+    setPage(1);
   };
 
-  openModal = e => {
+  const closeModal = () => {
+    setModal(false);
+  };
+
+  const openModal = e => {
     if (e.target.id) {
-      this.setState({ modal: true });
+      setModal(true);
       const selectedID = e.target.id;
-      const selectedElement = this.state.imageArray.find(
+      const selectedElement = imageArray.find(
         object => selectedID === `${object.id}`
       );
       const selectedURL = selectedElement.largeImageURL;
-
-      this.setState({ largeURL: selectedURL });
+      setLargeUrl(selectedURL);
     }
   };
 
-  closeModal = () => {
-    this.setState({ modal: false });
+  const addNextPage = () => {
+    setPage(page + 1);
+    setStatus('pending');
   };
 
-  render() {
-    const { status, imageArray, modal, largeURL, searchName, page } =
-      this.state;
-
-    return (
-      <AppStyledBox>
-        <SearchBar onSubmit={this.search} />
-        <ImageGallery
-          status={status}
-          imageArray={imageArray}
-          modal={modal}
-          closeModal={this.closeModal}
-          largeURL={largeURL}
-          openModal={this.openModal}
-          page={page}
-        />
-        {imageArray.length && (
-          <ButtonLoadMore
-            searchName={searchName}
-            addNextPage={this.addNextPage}
-          />
-        )}
-      </AppStyledBox>
-    );
-  }
-}
+  return (
+    <AppStyledBox>
+      <SearchBar onSubmit={search} />
+      <ImageGallery
+        status={status}
+        imageArray={imageArray}
+        modal={modal}
+        closeModal={closeModal}
+        largeURL={largeURL}
+        openModal={openModal}
+        page={page}
+      />
+      {imageArray.length && (
+        <ButtonLoadMore searchName={searchName} addNextPage={addNextPage} />
+      )}
+    </AppStyledBox>
+  );
+};

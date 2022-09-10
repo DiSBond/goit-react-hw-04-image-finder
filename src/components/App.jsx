@@ -7,7 +7,6 @@ import AppStyledBox from './appStyled.jsx';
 
 export const App = () => {
   const [searchName, setSearchName] = useState('');
-  const [selectedImage, setSelectedImage] = useState({});
   const [imageArray, setImageArray] = useState([]);
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState('idle');

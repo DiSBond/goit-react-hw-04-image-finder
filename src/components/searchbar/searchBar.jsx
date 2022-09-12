@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import { useState } from 'react';
 
 import {
   SearchBarSt,
@@ -9,51 +9,47 @@ import {
   SearchFormInput,
 } from './searchBarSt';
 
-export default class SearchBar extends Component {
-  state = {
-    searchName: '',
-  };
+const SearchBar = ({ onSubmit }) => {
+  const [searchName, setSearchName] = useState('');
 
-  static propTypes = {
-    onSubmit: propTypes.func.isRequired,
-  };
-
-  addPictureName = e => {
-    this.setState({ searchName: e.currentTarget.value.toLowerCase() });
-  };
-
-  searchSubmit = event => {
+  const searchSubmit = event => {
     event.preventDefault();
 
-    if (this.state.searchName.trim() === '') {
+    if (searchName.trim() === '') {
       alert('Строка запроса пуста');
       return;
     }
 
-    this.props.onSubmit(this.state.searchName);
-    this.setState({ searchName: '' });
+    onSubmit(searchName);
+    setSearchName('');
   };
 
-  render() {
-    return (
-      <SearchBarSt>
-        <header>
-          <SearchForm onSubmit={this.searchSubmit}>
-            <ButtonSearch type="submit">
-              <SearchFormButton>Search</SearchFormButton>
-            </ButtonSearch>
+  return (
+    <SearchBarSt>
+      <header>
+        <SearchForm onSubmit={searchSubmit}>
+          <ButtonSearch type="submit">
+            <SearchFormButton>Search</SearchFormButton>
+          </ButtonSearch>
 
-            <SearchFormInput
-              type="text"
-              autoComplete="off"
-              autoFocus
-              placeholder="Search images and photos"
-              onChange={this.addPictureName}
-              value={this.state.searchName}
-            />
-          </SearchForm>
-        </header>
-      </SearchBarSt>
-    );
-  }
-}
+          <SearchFormInput
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+            onChange={e =>
+              setSearchName(e.currentTarget.value.toLocaleLowerCase())
+            }
+            value={searchName}
+          />
+        </SearchForm>
+      </header>
+    </SearchBarSt>
+  );
+};
+
+export default SearchBar;
+
+SearchBar.propTypes = {
+  onSubmit: propTypes.func.isRequired,
+};
